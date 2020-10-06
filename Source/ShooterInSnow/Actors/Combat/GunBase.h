@@ -6,21 +6,42 @@
 #include "GameFramework/Actor.h"
 #include "GunBase.generated.h"
 
+class UParticleSystem;
+
 UCLASS()
 class SHOOTERINSNOW_API AGunBase : public AActor
 {
-	GENERATED_BODY()
-	
-public:	
-	// Sets default values for this actor's properties
-	AGunBase();
-	
-	virtual void Fire();
+    GENERATED_BODY()
 
-private:	
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components, meta=(AllowPrivateAccess="true"))
-	USceneComponent* Root;
+public:
+    // Sets default values for this actor's properties
+    AGunBase();
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components, meta=(AllowPrivateAccess="true"))
-	USkeletalMeshComponent* Mesh;
+    virtual void Fire();
+
+protected:
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components)
+    USkeletalMeshComponent* Mesh;
+
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components, meta=(AllowPrivateAccess="true"))
+    USceneComponent* MuzzleFirePoint;
+
+    UPROPERTY(EditAnywhere, Category="Combat|Effects")
+    UParticleSystem* MuzzleFlash;
+
+    UPROPERTY(EditAnywhere, Category=Combat)
+    int32 MagazineCapacity;
+
+    UPROPERTY(EditAnywhere, Category=Combat)
+    int32 FireRate;
+    
+    UPROPERTY(EditAnywhere, Category=Combat)
+    int32 FireRange;    
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat", meta=(AllowPrivateAccess="true"))
+    int32 Caliber;
+
+private:
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components, meta=(AllowPrivateAccess="true"))
+    USceneComponent* Root;
 };

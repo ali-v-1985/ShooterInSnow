@@ -3,6 +3,8 @@
 
 #include "Rifle.h"
 
+#include "Kismet/GameplayStatics.h"
+
 ARifle::ARifle()
 {
 }
@@ -14,7 +16,7 @@ void ARifle::Tick(float DeltaTime)
 
 void ARifle::Fire()
 {
-    // GetWorld
+    UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, MuzzleFirePoint, TEXT("MuzzleFlashSocket"));
 }
 
 void ARifle::BeginPlay()

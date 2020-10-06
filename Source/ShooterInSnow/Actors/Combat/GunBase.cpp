@@ -16,6 +16,9 @@ AGunBase::AGunBase()
 	
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
+
+	MuzzleFirePoint = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Muzzle Fire Point"));
+	MuzzleFirePoint->SetupAttachment(Root);
 }
 
 void AGunBase::Fire()
