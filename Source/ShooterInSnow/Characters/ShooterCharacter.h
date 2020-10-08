@@ -31,6 +31,8 @@ public:
 
     UFUNCTION(BlueprintPure, Category=Health)
     bool IsDead() const;
+
+    void PullTrigger();
     
 protected:
     void HideDefaultWeapon() const;
@@ -79,7 +81,6 @@ private:
     void ChangeHand();
     void ChangeSpringArmRelativeLocationY() const;
     void ChangeSpringArmSocketOffsetY() const;
-    void PullTrigger();
     void SpawnWeapons();
     void UseChoseWeapon(AGunBase* Weapon);
 };
