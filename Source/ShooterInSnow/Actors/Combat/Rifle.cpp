@@ -44,5 +44,11 @@ void ARifle::Fire()
         // DrawDebugPoint(GetWorld(), Hit.Location, Caliber, FColor::Red, true);
         // // DrawDebugLine(GetWorld(), Start, Hit.Location, FColor::Red, true);
         UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitFlash, Hit.Location, ShotDirection.Rotation());
+        auto HitActor = Hit.GetActor();
+        if (HitActor != nullptr)
+        {
+            FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
+            HitActor->TakeDamage(Damage, DamageEvent, Controller, this);
+        }
     }
 }

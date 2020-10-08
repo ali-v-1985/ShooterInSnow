@@ -35,10 +35,13 @@ protected:
     int32 FireRate;
     
     UPROPERTY(EditAnywhere, Category=Combat)
-    int32 FireRange;    
+    float FireRange;    
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat", meta=(AllowPrivateAccess="true"))
-    int32 Caliber;
+    float Caliber;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat", meta=(AllowPrivateAccess="true"))
+    float Damage = 100;
 
 private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components, meta=(AllowPrivateAccess="true"))
