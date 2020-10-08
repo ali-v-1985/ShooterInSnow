@@ -44,7 +44,5 @@ void ARifle::Fire()
         // DrawDebugPoint(GetWorld(), Hit.Location, Caliber, FColor::Red, true);
         // // DrawDebugLine(GetWorld(), Start, Hit.Location, FColor::Red, true);
         UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitFlash, Hit.Location, ShotDirection.Rotation());
-        UGameplayStatics::SpawnDecalAtLocation(GetWorld(), HitFlash, Hit.Location, ShotDirection.Rotation());
-    
     }
 }
