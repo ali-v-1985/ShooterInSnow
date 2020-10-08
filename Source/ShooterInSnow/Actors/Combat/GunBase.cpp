@@ -4,8 +4,12 @@
 #include "GunBase.h"
 #include "Components/SceneComponent.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "DrawDebugHelpers.h"
+#include "GameFramework/Controller.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
+
 AGunBase::AGunBase()
 {
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
@@ -17,10 +21,21 @@ AGunBase::AGunBase()
 	Mesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(Root);
 
-	MuzzleFirePoint = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("Muzzle Fire Point"));
-	MuzzleFirePoint->SetupAttachment(Root);
 }
 
 void AGunBase::Fire()
 {
+	// DrawDebugCam();
+}
+
+void AGunBase::DrawDebugCam() const
+{
+	FVector ViewPointLocation;
+	FRotator ViewPointRotation;
+	const auto Controller = Cast<APawn>(GetOwner())->GetController();
+
+	Controller->GetPlayerViewPoint(ViewPointLocation, ViewPointRotation);
+	DrawDebugCamera(GetWorld(),
+	                  ViewPointLocation, ViewPointRotation,
+	                  90, 2, FColor::Red, true);
 }

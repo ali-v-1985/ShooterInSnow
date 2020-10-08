@@ -14,20 +14,19 @@ class SHOOTERINSNOW_API AGunBase : public AActor
     GENERATED_BODY()
 
 public:
-    // Sets default values for this actor's properties
     AGunBase();
-
+    
     virtual void Fire();
 
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components)
     USkeletalMeshComponent* Mesh;
 
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components, meta=(AllowPrivateAccess="true"))
-    USceneComponent* MuzzleFirePoint;
-
     UPROPERTY(EditAnywhere, Category="Combat|Effects")
     UParticleSystem* MuzzleFlash;
+
+    UPROPERTY(EditAnywhere, Category="Combat|Effects")
+    UParticleSystem* HitFlash;
 
     UPROPERTY(EditAnywhere, Category=Combat)
     int32 MagazineCapacity;
@@ -44,4 +43,6 @@ protected:
 private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components, meta=(AllowPrivateAccess="true"))
     USceneComponent* Root;
+
+    void DrawDebugCam() const;
 };
