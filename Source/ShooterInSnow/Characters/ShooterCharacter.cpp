@@ -63,11 +63,12 @@ float AShooterCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEven
     DamageToApply = FMath::Min(Health, DamageToApply);
     Health -= DamageToApply;
     UE_LOG(LogTemp, Warning, TEXT("%s 's health : %f"), *GetName(), Health);
-    if(Health <= 0.0)
-    {
-        Destroy();
-    }
     return DamageToApply;
+}
+
+bool AShooterCharacter::IsDead() const
+{
+    return Health <= 0.0;
 }
 
 void AShooterCharacter::PullTrigger()

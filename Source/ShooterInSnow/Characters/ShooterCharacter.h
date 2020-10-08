@@ -28,6 +28,10 @@ public:
 
     virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator,
                              AActor* DamageCauser) override;
+
+    UFUNCTION(BlueprintPure, Category=Health)
+    bool IsDead() const;
+    
 protected:
     void HideDefaultWeapon() const;
     // Called when the game starts or when spawned
