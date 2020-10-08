@@ -41,7 +41,7 @@ protected:
     float Caliber;
 
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat", meta=(AllowPrivateAccess="true"))
-    float Damage = 100;
+    float Damage = 30;
 
 private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components, meta=(AllowPrivateAccess="true"))

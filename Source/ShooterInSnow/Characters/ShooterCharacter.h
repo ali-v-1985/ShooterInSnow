@@ -14,62 +14,68 @@ class AGunBase;
 UCLASS()
 class SHOOTERINSNOW_API AShooterCharacter : public ACharacter
 {
-	GENERATED_BODY()
+    GENERATED_BODY()
 
 public:
-	// Sets default values for this character's properties
-	AShooterCharacter();
+    // Sets default values for this character's properties
+    AShooterCharacter();
 
+    // Called every frame
+    virtual void Tick(float DeltaTime) override;
+
+    // Called to bind functionality to input
+    virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+
+    virtual float TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator,
+                             AActor* DamageCauser) override;
 protected:
-	void HideDefaultWeapon() const;
-	// Called when the game starts or when spawned
-	virtual void BeginPlay() override;
-
-public:	
-	// Called every frame
-	virtual void Tick(float DeltaTime) override;
-
-	// Called to bind functionality to input
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
+    void HideDefaultWeapon() const;
+    // Called when the game starts or when spawned
+    virtual void BeginPlay() override;
 
 private:
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera, meta=(AllowPrivateAccess="true"))
-	USpringArmComponent* SpringArmComponent;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera, meta=(AllowPrivateAccess="true"))
+    USpringArmComponent* SpringArmComponent;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera, meta=(AllowPrivateAccess="true"))
-	UCameraComponent* CameraComponent;
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category= Camera, meta=(AllowPrivateAccess="true"))
+    UCameraComponent* CameraComponent;
 
-	UPROPERTY(EditAnywhere, Category= Movement)
-	float RotationRate = 10;
+    UPROPERTY(EditAnywhere, Category= Movement)
+    float RotationRate = 10;
 
-	UPROPERTY(EditAnywhere, Category= Camera)
-	float ChangeHandSpeed = 10;
+    UPROPERTY(EditAnywhere, Category= Camera)
+    float ChangeHandSpeed = 10;
 
-	UPROPERTY(EditDefaultsOnly, Category= Combat, meta=(AllowPrivateAccess="true"))
-	TArray<TSubclassOf<AGunBase>> WeaponInventory;
+    UPROPERTY(EditAnywhere, Category= Camera)
+    float InitialHealth = 100;
 
-	UPROPERTY(EditDefaultsOnly, Category= Combat, meta=(AllowPrivateAccess="true"))
-	TSubclassOf<AGunBase> WeaponOfChoice;
-	
-	// TArray<AGunBase*> Weapons;
+    UPROPERTY(EditDefaultsOnly, Category= Combat, meta=(AllowPrivateAccess="true"))
+    TArray<TSubclassOf<AGunBase>> WeaponInventory;
 
-	AGunBase* WeaponInUse;
-	
-	bool ShouldChangeHand = false;
-	
-	float TargetSocketOffsetY;
-	float TargetRelativeLocationY;
-	
-	void MoveForward(float Value);
-	void MoveRight(float Value);
-	void LookUp(float Value);
-	void LookRight(float Value);
-	void ChangeHandDelegate();
-	void ChangeHand();
-	void ChangeSpringArmRelativeLocationY() const;
-	void ChangeSpringArmSocketOffsetY() const;
-	void PullTrigger();
-	void SpawnWeapons();
-	void UseChoseWeapon(AGunBase* Weapon);
+    UPROPERTY(EditDefaultsOnly, Category= Combat, meta=(AllowPrivateAccess="true"))
+    TSubclassOf<AGunBase> WeaponOfChoice;
+
+    // TArray<AGunBase*> Weapons;
+
+    AGunBase* WeaponInUse;
+
+    bool ShouldChangeHand = false;
+
+    float TargetSocketOffsetY;
+    float TargetRelativeLocationY;
+
+    float Health;
+
+    void MoveForward(float Value);
+    void MoveRight(float Value);
+    void LookUp(float Value);
+    void LookRight(float Value);
+    void ChangeHandDelegate();
+    void ChangeHand();
+    void ChangeSpringArmRelativeLocationY() const;
+    void ChangeSpringArmSocketOffsetY() const;
+    void PullTrigger();
+    void SpawnWeapons();
+    void UseChoseWeapon(AGunBase* Weapon);
 };

@@ -23,31 +23,6 @@ AShooterCharacter::AShooterCharacter()
     CameraComponent->SetupAttachment(SpringArmComponent);
 }
 
-void AShooterCharacter::SpawnWeapons()
-{
-    for(auto WeaponType : WeaponInventory)
-    {
-        const auto Weapon = GetWorld()->SpawnActor<AGunBase>(WeaponType);
-        if (WeaponOfChoice == WeaponType)
-        {
-            WeaponInUse = Weapon;
-        }
-    }
-}
-
-void AShooterCharacter::UseChoseWeapon(AGunBase* Weapon)
-{
-    Weapon->AttachToComponent(GetMesh(),
-                                   FAttachmentTransformRules::KeepRelativeTransform,
-                                   TEXT("WeaponSocket"));
-    Weapon->SetOwner(this);
-}
-
-void AShooterCharacter::HideDefaultWeapon() const
-{
-    GetMesh()->HideBoneByName(TEXT("weapon_r"), PBO_None);
-}
-
 // Called when the game starts or when spawned
 void AShooterCharacter::BeginPlay()
 {
@@ -55,6 +30,7 @@ void AShooterCharacter::BeginPlay()
     SpawnWeapons();
     HideDefaultWeapon();
     UseChoseWeapon(WeaponInUse);
+    Health = InitialHealth;
 }
 
 // Called every frame
@@ -78,6 +54,20 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AShooterCharacter::Jump);
     PlayerInputComponent->BindAction(TEXT("ChangeHand"), IE_Pressed, this, &AShooterCharacter::ChangeHandDelegate);
     PlayerInputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AShooterCharacter::PullTrigger);
+}
+
+float AShooterCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator,
+                                    AActor* DamageCauser)
+{
+    auto DamageToApply = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
+    DamageToApply = FMath::Min(Health, DamageToApply);
+    Health -= DamageToApply;
+    UE_LOG(LogTemp, Warning, TEXT("%s 's health : %f"), *GetName(), Health);
+    if(Health <= 0.0)
+    {
+        Destroy();
+    }
+    return DamageToApply;
 }
 
 void AShooterCharacter::PullTrigger()
@@ -167,4 +157,29 @@ void AShooterCharacter::ChangeSpringArmSocketOffsetY() const
     SocketOffset.Y = CurrentSpringArmSocketOffsetY;
     SpringArmComponent->SocketOffset = SocketOffset;
     UE_LOG(LogTemp, Warning, TEXT("SpringArmComponent.SocketOffset.Y while moving is %f"), SpringArmComponent->SocketOffset.Y);
+}
+
+void AShooterCharacter::SpawnWeapons()
+{
+    for(auto WeaponType : WeaponInventory)
+    {
+        const auto Weapon = GetWorld()->SpawnActor<AGunBase>(WeaponType);
+        if (WeaponOfChoice == WeaponType)
+        {
+            WeaponInUse = Weapon;
+        }
+    }
+}
+
+void AShooterCharacter::UseChoseWeapon(AGunBase* Weapon)
+{
+    Weapon->AttachToComponent(GetMesh(),
+                                   FAttachmentTransformRules::KeepRelativeTransform,
+                                   TEXT("WeaponSocket"));
+    Weapon->SetOwner(this);
+}
+
+void AShooterCharacter::HideDefaultWeapon() const
+{
+    GetMesh()->HideBoneByName(TEXT("weapon_r"), PBO_None);
 }
