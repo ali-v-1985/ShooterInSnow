@@ -10,6 +10,7 @@
 #include "ShooterInSnow/Actors/Combat/GunBase.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "ShooterInSnow/GameModes/ShooterGameModeBase.h"
 
 // Sets default values
 AShooterCharacter::AShooterCharacter()
@@ -66,8 +67,16 @@ float AShooterCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEven
     
     if(IsDead())
     {
+        AShooterGameModeBase* ShooterGameModeBase = GetWorld()->GetAuthGameMode<AShooterGameModeBase>();
+        if(ShooterGameModeBase == nullptr)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("No game mode found of type ShooterGameModeBase"));
+            return DamageToApply;
+        }
+        ShooterGameModeBase->PawnKilled(this);
         DetachFromControllerPendingDestroy();
         GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+        
     }
     return DamageToApply;
 }
