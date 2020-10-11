@@ -32,7 +32,7 @@ void AShooterCharacter::BeginPlay()
     SpawnWeapons();
     HideDefaultWeapon();
     UseChoseWeapon(WeaponInUse);
-    Health = InitialHealth;
+    Health = MaxHealth;
 }
 
 // Called every frame
@@ -79,6 +79,11 @@ float AShooterCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEven
         
     }
     return DamageToApply;
+}
+
+float AShooterCharacter::GetHealthPercent() const
+{
+    return Health / MaxHealth;
 }
 
 bool AShooterCharacter::IsDead() const

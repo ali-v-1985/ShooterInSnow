@@ -30,6 +30,9 @@ public:
                              AActor* DamageCauser) override;
 
     UFUNCTION(BlueprintPure, Category=Health)
+    float GetHealthPercent() const;
+
+    UFUNCTION(BlueprintPure, Category=Health)
     bool IsDead() const;
 
     void PullTrigger();
@@ -58,7 +61,7 @@ private:
     float ChangeHandSpeed = 10;
 
     UPROPERTY(EditAnywhere, Category= Camera)
-    float InitialHealth = 100;
+    float MaxHealth = 100;
 
     UPROPERTY(EditDefaultsOnly, Category= Combat, meta=(AllowPrivateAccess="true"))
     TArray<TSubclassOf<AGunBase>> WeaponInventory;
