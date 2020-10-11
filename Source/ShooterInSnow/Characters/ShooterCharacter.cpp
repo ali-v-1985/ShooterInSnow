@@ -6,6 +6,7 @@
 #include "Engine/World.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
 #include "ShooterInSnow/Actors/Combat/GunBase.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
@@ -63,6 +64,12 @@ float AShooterCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEven
     DamageToApply = FMath::Min(Health, DamageToApply);
     Health -= DamageToApply;
     UE_LOG(LogTemp, Warning, TEXT("%s 's health : %f"), *GetName(), Health);
+
+    if(IsDead())
+    {
+        DetachFromControllerPendingDestroy();
+        GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+    }
     return DamageToApply;
 }
 
