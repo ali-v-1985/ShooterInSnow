@@ -5,6 +5,7 @@
 #include "Engine/World.h"
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
+#include "ShooterInSnow/Characters/ShooterCharacter.h"
 
 void AShooterAIController::BeginPlay()
 {
@@ -12,9 +13,15 @@ void AShooterAIController::BeginPlay()
     if (AIBehavior)
     {
         RunBehaviorTree(AIBehavior);
-        const auto ActorLocation = GetPawn()->GetActorLocation();
+        const auto ShooterPawn = Cast<AShooterCharacter>(GetPawn());
         GetBlackboardComponent()->SetValueAsVector(TEXT("InitialLocation"),
-            ActorLocation);
+            ShooterPawn->GetActorLocation());
+
+        GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolStartLocation"),
+            ShooterPawn->GetActorLocation());
+
+        GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolEndLocation"),
+            ShooterPawn->GetPatrolEndLocation());
         
     }
 }

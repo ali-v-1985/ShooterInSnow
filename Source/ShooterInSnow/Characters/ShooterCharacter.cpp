@@ -76,6 +76,11 @@ void AShooterCharacter::PullTrigger()
     WeaponInUse->Fire();
 }
 
+FVector AShooterCharacter::GetPatrolEndLocation() const
+{
+    return PatrolEndLocation;
+}
+
 void AShooterCharacter::MoveForward(float Value)
 {
     AddMovementInput(GetActorForwardVector() * Value);

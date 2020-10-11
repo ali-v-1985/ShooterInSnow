@@ -34,6 +34,8 @@ public:
 
     void PullTrigger();
     
+    FVector GetPatrolEndLocation() const;
+    
 protected:
     void HideDefaultWeapon() const;
     // Called when the game starts or when spawned
@@ -62,6 +64,8 @@ private:
     UPROPERTY(EditDefaultsOnly, Category= Combat, meta=(AllowPrivateAccess="true"))
     TSubclassOf<AGunBase> WeaponOfChoice;
 
+    UPROPERTY(EditAnywhere, Category="Combat|Patrol", meta=(AllowPrivateAccess="true"))
+    FVector PatrolEndLocation;
     // TArray<AGunBase*> Weapons;
 
     AGunBase* WeaponInUse;
