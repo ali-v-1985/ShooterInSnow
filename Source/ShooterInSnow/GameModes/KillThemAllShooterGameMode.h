@@ -16,5 +16,9 @@ class SHOOTERINSNOW_API AKillThemAllShooterGameMode : public AShooterGameModeBas
 
 
 public:
+	bool IsAllAIDead();
 	virtual void PawnKilled(class APawn* Pawn) override;
+
+private:
+	void EndGame(bool bIsPlayerWinner);
 };
