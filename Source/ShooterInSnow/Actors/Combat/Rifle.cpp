@@ -25,7 +25,15 @@ void ARifle::BeginPlay()
 
 void ARifle::Fire()
 {
-    Super::Fire();
+    if (IsCocked())
+    {
+        Super::Fire();
+        HandleFire();
+    }
+}
+
+void ARifle::HandleFire()
+{
     UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
     FHitResult Hit;
     FVector Start;

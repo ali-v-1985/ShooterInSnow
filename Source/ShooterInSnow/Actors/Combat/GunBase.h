@@ -15,12 +15,15 @@ class SHOOTERINSNOW_API AGunBase : public AActor
 
 public:
     AGunBase();
-    
+
     virtual void Fire();
 
     int32 GetFireRate() const;
 
 protected:
+
+    virtual void BeginPlay() override;
+    
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components)
     USkeletalMeshComponent* Mesh;
 
@@ -45,9 +48,15 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat", meta=(AllowPrivateAccess="true"))
     float Damage = 30;
 
+    bool IsCocked();
+
 private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components, meta=(AllowPrivateAccess="true"))
     USceneComponent* Root;
 
+    float LastShot = 0;
+
+    float TimeToCock = 0;
+    
     void DrawDebugCam() const;
 };

@@ -23,14 +23,39 @@ AGunBase::AGunBase()
 
 }
 
+void AGunBase::BeginPlay()
+{
+	Super::BeginPlay();
+	if (FireRate > 0)
+	{
+		TimeToCock = 60 / FireRate;
+	}
+}
+
 void AGunBase::Fire()
 {
+	LastShot = GetWorld()->GetTimeSeconds();
 	// DrawDebugCam();
 }
 
 int32 AGunBase::GetFireRate() const
 {
 	return FireRate;
+}
+
+bool AGunBase::IsCocked()
+{
+	const float CurrentTime = GetWorld()->GetTimeSeconds();
+	bool bIsCocked = true;
+	if (LastShot != 0)
+	{
+		bIsCocked = CurrentTime - LastShot >= TimeToCock;
+	}
+	UE_LOG(LogTemp, Warning, TEXT("Is Cocked? %d"), bIsCocked);
+	UE_LOG(LogTemp, Warning, TEXT("       TimeToCock: %f"), TimeToCock);
+	UE_LOG(LogTemp, Warning, TEXT("       LastShot Time: %f"), LastShot);
+	UE_LOG(LogTemp, Warning, TEXT("       Current Time: %f"), CurrentTime);
+	return bIsCocked;
 }
 
 void AGunBase::DrawDebugCam() const
