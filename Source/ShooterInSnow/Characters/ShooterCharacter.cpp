@@ -81,6 +81,11 @@ FVector AShooterCharacter::GetPatrolEndLocation() const
     return PatrolEndLocation;
 }
 
+AGunBase* AShooterCharacter::GetWeaponInUse() const
+{
+    return WeaponInUse;
+}
+
 void AShooterCharacter::MoveForward(float Value)
 {
     AddMovementInput(GetActorForwardVector() * Value);

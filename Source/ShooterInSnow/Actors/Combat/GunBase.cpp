@@ -28,6 +28,11 @@ void AGunBase::Fire()
 	// DrawDebugCam();
 }
 
+int32 AGunBase::GetFireRate() const
+{
+	return FireRate;
+}
+
 void AGunBase::DrawDebugCam() const
 {
 	FVector ViewPointLocation;

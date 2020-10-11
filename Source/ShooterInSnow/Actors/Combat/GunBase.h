@@ -18,6 +18,8 @@ public:
     
     virtual void Fire();
 
+    int32 GetFireRate() const;
+
 protected:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components)
     USkeletalMeshComponent* Mesh;

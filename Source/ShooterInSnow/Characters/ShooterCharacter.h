@@ -36,6 +36,8 @@ public:
     
     FVector GetPatrolEndLocation() const;
     
+    AGunBase* GetWeaponInUse() const;
+    
 protected:
     void HideDefaultWeapon() const;
     // Called when the game starts or when spawned

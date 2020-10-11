@@ -6,6 +6,7 @@
 #include "BehaviorTree/BlackboardComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "ShooterInSnow/Characters/ShooterCharacter.h"
+#include "ShooterInSnow/Actors/Combat/GunBase.h"
 
 void AShooterAIController::BeginPlay()
 {
@@ -14,6 +15,10 @@ void AShooterAIController::BeginPlay()
     {
         RunBehaviorTree(AIBehavior);
         const auto ShooterPawn = Cast<AShooterCharacter>(GetPawn());
+        if (ShooterPawn == nullptr)
+        {
+            return;
+        }
         GetBlackboardComponent()->SetValueAsVector(TEXT("InitialLocation"),
             ShooterPawn->GetActorLocation());
 
@@ -23,6 +28,14 @@ void AShooterAIController::BeginPlay()
         GetBlackboardComponent()->SetValueAsVector(TEXT("PatrolEndLocation"),
             ShooterPawn->GetPatrolEndLocation());
         
+        if (ShooterPawn->GetWeaponInUse() != nullptr)
+        {
+            const auto FireRate = ShooterPawn->GetWeaponInUse()->GetFireRate();
+            const auto WaitForNextShoot = 60 / FireRate;
+
+            GetBlackboardComponent()->SetValueAsFloat(TEXT("WaitForNextShoot"),
+                                                      WaitForNextShoot);
+        }
     }
 }
 
