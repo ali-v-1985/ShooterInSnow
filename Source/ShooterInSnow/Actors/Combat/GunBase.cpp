@@ -30,11 +30,17 @@ void AGunBase::BeginPlay()
 	{
 		TimeToCock = 60 / FireRate;
 	}
+
+	AmmoLeft = MagazineCapacity;
 }
 
 void AGunBase::Fire()
 {
 	LastShot = GetWorld()->GetTimeSeconds();
+	if (AmmoLeft > 0)
+	{
+		AmmoLeft--;
+	}
 	// DrawDebugCam();
 }
 
@@ -43,7 +49,7 @@ int32 AGunBase::GetFireRate() const
 	return FireRate;
 }
 
-bool AGunBase::IsCocked()
+bool AGunBase::IsCocked() const
 {
 	const float CurrentTime = GetWorld()->GetTimeSeconds();
 	bool bIsCocked = true;
@@ -52,6 +58,16 @@ bool AGunBase::IsCocked()
 		bIsCocked = CurrentTime - LastShot >= TimeToCock;
 	}
 	return bIsCocked;
+}
+
+bool AGunBase::HasAmmo() const
+{
+	return AmmoLeft > 0;
+}
+
+bool AGunBase::FullMagazine() const
+{
+	return AmmoLeft == MagazineCapacity;
 }
 
 void AGunBase::DrawDebugCam() const

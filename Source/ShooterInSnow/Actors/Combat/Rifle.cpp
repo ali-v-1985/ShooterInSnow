@@ -8,6 +8,7 @@
 #include "Engine/World.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Particles/ParticleSystem.h"
+#include "Sound/SoundBase.h"
 
 ARifle::ARifle()
 {
@@ -25,7 +26,7 @@ void ARifle::BeginPlay()
 
 void ARifle::Fire()
 {
-    if (IsCocked())
+    if (HasAmmo() && IsCocked())
     {
         Super::Fire();
         RifleFire();
@@ -35,6 +36,7 @@ void ARifle::Fire()
 void ARifle::RifleFire()
 {
     UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
+    UGameplayStatics::SpawnSoundAttached(MuzzleSound, Mesh, TEXT("MuzzleFlashSocket"));
     FHitResult Hit;
     FVector Start, End;
     FRotator Rotation;
@@ -55,6 +57,7 @@ void ARifle::RifleFire()
     {
         const auto ShotDirection = -Rotation.Vector();
         UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitFlash, Hit.Location, ShotDirection.Rotation());
+        UGameplayStatics::SpawnSoundAtLocation(GetWorld(), HitSound, Hit.Location, ShotDirection.Rotation());
         auto HitActor = Hit.GetActor();
         if (HitActor != nullptr)
         {

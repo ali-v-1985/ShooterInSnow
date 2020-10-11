@@ -7,6 +7,7 @@
 #include "GunBase.generated.h"
 
 class UParticleSystem;
+class USoundBase;
 
 UCLASS()
 class SHOOTERINSNOW_API AGunBase : public AActor
@@ -31,7 +32,13 @@ protected:
     UParticleSystem* MuzzleFlash;
 
     UPROPERTY(EditAnywhere, Category="Combat|Effects")
+    USoundBase* MuzzleSound;
+
+    UPROPERTY(EditAnywhere, Category="Combat|Effects")
     UParticleSystem* HitFlash;
+
+    UPROPERTY(EditAnywhere, Category="Combat|Effects")
+    USoundBase* HitSound;
 
     UPROPERTY(EditAnywhere, Category=Combat)
     int32 MagazineCapacity;
@@ -48,7 +55,11 @@ protected:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat", meta=(AllowPrivateAccess="true"))
     float Damage = 30;
 
-    bool IsCocked();
+    bool IsCocked() const;
+    
+    bool HasAmmo() const;
+    
+    bool FullMagazine() const; 
 
 private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components, meta=(AllowPrivateAccess="true"))
@@ -57,6 +68,8 @@ private:
     float LastShot = 0;
 
     float TimeToCock = 0;
+
+    int32 AmmoLeft;
     
     void DrawDebugCam() const;
 };
