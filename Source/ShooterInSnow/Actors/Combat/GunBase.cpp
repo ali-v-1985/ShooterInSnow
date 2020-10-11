@@ -51,10 +51,6 @@ bool AGunBase::IsCocked()
 	{
 		bIsCocked = CurrentTime - LastShot >= TimeToCock;
 	}
-	UE_LOG(LogTemp, Warning, TEXT("Is Cocked? %d"), bIsCocked);
-	UE_LOG(LogTemp, Warning, TEXT("       TimeToCock: %f"), TimeToCock);
-	UE_LOG(LogTemp, Warning, TEXT("       LastShot Time: %f"), LastShot);
-	UE_LOG(LogTemp, Warning, TEXT("       Current Time: %f"), CurrentTime);
 	return bIsCocked;
 }
 
@@ -64,6 +60,10 @@ void AGunBase::DrawDebugCam() const
 	FRotator ViewPointRotation;
 	const auto Controller = Cast<APawn>(GetOwner())->GetController();
 
+	if(Controller == nullptr)
+	{
+		return;
+	}
 	Controller->GetPlayerViewPoint(ViewPointLocation, ViewPointRotation);
 	DrawDebugCamera(GetWorld(),
 	                  ViewPointLocation, ViewPointRotation,

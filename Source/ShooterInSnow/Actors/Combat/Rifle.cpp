@@ -36,24 +36,24 @@ void ARifle::RifleFire()
 {
     UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
     FHitResult Hit;
-    FVector Start;
-    FVector End;
+    FVector Start, End;
     FRotator Rotation;
     const auto Controller = Cast<APawn>(GetOwner())->GetController();
-
+    if(Controller == nullptr)
+    {
+        UE_LOG(LogTemp, Error, TEXT("No controller"));
+        return;
+    }
     Controller->GetPlayerViewPoint(Start, Rotation);
     End = Start + Rotation.Vector() * FireRange;
     FCollisionQueryParams Params;
     Params.AddIgnoredActor(this);
     Params.AddIgnoredActor(GetOwner());
-    const auto bSuccessHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_GameTraceChannel1, Params);
+    const auto bSuccessHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End,
+        ECC_GameTraceChannel1, Params);
     if(bSuccessHit)
     {
         const auto ShotDirection = -Rotation.Vector();
-        // UE_LOG(LogTemp, Warning, TEXT("End : (%f, %f, %f)"), End.X, End.Y, End.Z);
-        // UE_LOG(LogTemp, Warning, TEXT("Hit to : %s"), *Hit.GetActor()->GetName());
-        // DrawDebugPoint(GetWorld(), Hit.Location, Caliber, FColor::Red, true);
-        // // DrawDebugLine(GetWorld(), Start, Hit.Location, FColor::Red, true);
         UGameplayStatics::SpawnEmitterAtLocation(GetWorld(), HitFlash, Hit.Location, ShotDirection.Rotation());
         auto HitActor = Hit.GetActor();
         if (HitActor != nullptr)

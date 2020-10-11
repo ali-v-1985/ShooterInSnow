@@ -63,8 +63,7 @@ float AShooterCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEven
     auto DamageToApply = Super::TakeDamage(Damage, DamageEvent, EventInstigator, DamageCauser);
     DamageToApply = FMath::Min(Health, DamageToApply);
     Health -= DamageToApply;
-    UE_LOG(LogTemp, Warning, TEXT("%s 's health : %f"), *GetName(), Health);
-
+    
     if(IsDead())
     {
         DetachFromControllerPendingDestroy();
@@ -117,23 +116,14 @@ void AShooterCharacter::ChangeHandDelegate()
 {
     ShouldChangeHand = true;
 
-    UE_LOG(LogTemp, Warning, TEXT("SpringArmComponent.RelativeLocation.Y before moving is %f"), SpringArmComponent->GetRelativeLocation().Y);
-    UE_LOG(LogTemp, Warning, TEXT("SpringArmComponent.SocketOffset.Y before moving is %f"), SpringArmComponent->SocketOffset.Y);
-        
     TargetRelativeLocationY = SpringArmComponent->GetRelativeLocation().Y * -1;
     TargetSocketOffsetY = SpringArmComponent->SocketOffset.Y * -1;
-
-    UE_LOG(LogTemp, Warning, TEXT("TargetRelativeLocation.Y is %f"), TargetRelativeLocationY);
-    UE_LOG(LogTemp, Warning, TEXT("TargetSocketOffset.Y is %f"), TargetSocketOffsetY);
-        
-    
 }
 
 void AShooterCharacter::ChangeHand()
 {
     if (SpringArmComponent && ShouldChangeHand)
     {
-        UE_LOG(LogTemp, Warning, TEXT("ChangeHand is being executed"));
         ChangeSpringArmRelativeLocationY();
 
         ChangeSpringArmSocketOffsetY();
@@ -146,8 +136,6 @@ void AShooterCharacter::ChangeHand()
             RelativeLocation.Y = TargetRelativeLocationY;
             SpringArmComponent->SetRelativeLocation(RelativeLocation);
             SpringArmComponent->SocketOffset.Y = TargetSocketOffsetY;
-            UE_LOG(LogTemp, Warning, TEXT("SpringArmComponent.RelativeLocation.Y after moving is %f"), SpringArmComponent->GetRelativeLocation().Y);
-            UE_LOG(LogTemp, Warning, TEXT("SpringArmComponent.SocketOffset.Y after moving is %f"), SpringArmComponent->SocketOffset.Y);
         }
     }
 }
@@ -161,7 +149,6 @@ void AShooterCharacter::ChangeSpringArmRelativeLocationY() const
 
     SpringArmRelativeLocation.Y = CurrentSpringArmLocationY;
     SpringArmComponent->SetRelativeLocation(SpringArmRelativeLocation);
-    UE_LOG(LogTemp, Warning, TEXT("SpringArmComponent.RelativeLocation.Y while moving is %f"), SpringArmComponent->GetRelativeLocation().Y);    
 }
 
 void AShooterCharacter::ChangeSpringArmSocketOffsetY() const
@@ -174,7 +161,6 @@ void AShooterCharacter::ChangeSpringArmSocketOffsetY() const
 
     SocketOffset.Y = CurrentSpringArmSocketOffsetY;
     SpringArmComponent->SocketOffset = SocketOffset;
-    UE_LOG(LogTemp, Warning, TEXT("SpringArmComponent.SocketOffset.Y while moving is %f"), SpringArmComponent->SocketOffset.Y);
 }
 
 void AShooterCharacter::SpawnWeapons()

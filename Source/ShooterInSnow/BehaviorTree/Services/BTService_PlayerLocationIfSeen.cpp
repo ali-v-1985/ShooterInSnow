@@ -16,6 +16,14 @@ void UBTService_PlayerLocationIfSeen::TickNode(UBehaviorTreeComponent& OwnerComp
 {
     Super::TickNode(OwnerComp, NodeMemory, DeltaSeconds);
     const auto PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+    if(PlayerPawn == nullptr)
+    {
+        return;
+    }
+    if(OwnerComp.GetAIOwner() == nullptr)
+    {
+        return;
+    }
     if(OwnerComp.GetAIOwner()->LineOfSightTo(PlayerPawn))
     {
         OwnerComp.GetAIOwner()->GetBlackboardComponent()->SetValueAsVector(GetSelectedBlackboardKey(),
