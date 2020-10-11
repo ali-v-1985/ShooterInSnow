@@ -28,11 +28,11 @@ void ARifle::Fire()
     if (IsCocked())
     {
         Super::Fire();
-        HandleFire();
+        RifleFire();
     }
 }
 
-void ARifle::HandleFire()
+void ARifle::RifleFire()
 {
     UGameplayStatics::SpawnEmitterAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"));
     FHitResult Hit;
@@ -43,7 +43,10 @@ void ARifle::HandleFire()
 
     Controller->GetPlayerViewPoint(Start, Rotation);
     End = Start + Rotation.Vector() * FireRange;
-    const auto bSuccessHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_GameTraceChannel1);
+    FCollisionQueryParams Params;
+    Params.AddIgnoredActor(this);
+    Params.AddIgnoredActor(GetOwner());
+    const auto bSuccessHit = GetWorld()->LineTraceSingleByChannel(Hit, Start, End, ECC_GameTraceChannel1, Params);
     if(bSuccessHit)
     {
         const auto ShotDirection = -Rotation.Vector();
