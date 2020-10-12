@@ -21,6 +21,16 @@ public:
 
     int32 GetFireRate() const;
 
+    bool HasAmmo() const;
+    
+    int32 GetMagazineCapacity() const;
+    
+    bool IsMagazineFull() const;
+    
+    void Reload(int32 BulletCount);
+    
+    int32 GetAmmoLeft() const;
+
 protected:
 
     virtual void BeginPlay() override;
@@ -40,6 +50,9 @@ protected:
     UPROPERTY(EditAnywhere, Category="Combat|Effects")
     USoundBase* HitSound;
 
+    UPROPERTY(EditAnywhere, Category="Combat|Effects")
+    USoundBase* ReloadSound;
+
     UPROPERTY(EditAnywhere, Category=Combat)
     int32 MagazineCapacity;
 
@@ -57,10 +70,6 @@ protected:
 
     bool IsCocked() const;
     
-    bool HasAmmo() const;
-    
-    bool FullMagazine() const; 
-
 private:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Components, meta=(AllowPrivateAccess="true"))
     USceneComponent* Root;

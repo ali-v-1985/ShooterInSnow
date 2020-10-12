@@ -35,12 +35,20 @@ public:
     UFUNCTION(BlueprintPure, Category=Health)
     bool IsDead() const;
 
+    UFUNCTION(BlueprintPure, Category=Combat)
+    int32 GetCarryingAmmo() const;
+
+    UFUNCTION(BlueprintPure, Category=Combat)
+    int32 GetGunAmmo() const;
+
     void PullTrigger();
-    
+
+    void ReloadGun();
+
     FVector GetPatrolEndLocation() const;
-    
+
     AGunBase* GetWeaponInUse() const;
-    
+
 protected:
     void HideDefaultWeapon() const;
     // Called when the game starts or when spawned
@@ -62,6 +70,9 @@ private:
 
     UPROPERTY(EditAnywhere, Category= Camera)
     float MaxHealth = 100;
+
+    UPROPERTY(EditAnywhere, Category= Combat)
+    int32 CarriedAmmoAmount = 200;
 
     UPROPERTY(EditDefaultsOnly, Category= Combat, meta=(AllowPrivateAccess="true"))
     TArray<TSubclassOf<AGunBase>> WeaponInventory;

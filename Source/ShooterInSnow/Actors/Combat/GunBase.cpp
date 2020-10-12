@@ -65,9 +65,26 @@ bool AGunBase::HasAmmo() const
 	return AmmoLeft > 0;
 }
 
-bool AGunBase::FullMagazine() const
+int32 AGunBase::GetMagazineCapacity() const
+{
+	return MagazineCapacity;
+}
+
+bool AGunBase::IsMagazineFull() const
 {
 	return AmmoLeft == MagazineCapacity;
+}
+
+void AGunBase::Reload(int32 BulletCount)
+{
+	UGameplayStatics::SpawnSoundAttached(ReloadSound, Mesh, TEXT("MuzzleFlashSocket"));
+    const int BulletToReload = FMath::Min(BulletCount + AmmoLeft, MagazineCapacity);
+	AmmoLeft = BulletToReload;
+}
+
+int32 AGunBase::GetAmmoLeft() const
+{
+	return AmmoLeft;
 }
 
 void AGunBase::DrawDebugCam() const

@@ -56,6 +56,7 @@ void AShooterCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
     PlayerInputComponent->BindAction(TEXT("Jump"), IE_Pressed, this, &AShooterCharacter::Jump);
     PlayerInputComponent->BindAction(TEXT("ChangeHand"), IE_Pressed, this, &AShooterCharacter::ChangeHandDelegate);
     PlayerInputComponent->BindAction(TEXT("Fire"), IE_Pressed, this, &AShooterCharacter::PullTrigger);
+    PlayerInputComponent->BindAction(TEXT("Reload"), IE_Pressed, this, &AShooterCharacter::ReloadGun);
 }
 
 float AShooterCharacter::TakeDamage(float Damage, FDamageEvent const& DamageEvent, AController* EventInstigator,
@@ -91,9 +92,30 @@ bool AShooterCharacter::IsDead() const
     return Health <= 0.0;
 }
 
+int32 AShooterCharacter::GetCarryingAmmo() const
+{
+    return CarriedAmmoAmount;
+}
+
+int32 AShooterCharacter::GetGunAmmo() const
+{
+    return WeaponInUse->GetAmmoLeft();
+}
+
 void AShooterCharacter::PullTrigger()
 {
-    WeaponInUse->Fire();
+    if(!WeaponInUse->HasAmmo())
+    {
+        ReloadGun();
+    }
+    WeaponInUse->Fire();   
+}
+
+void AShooterCharacter::ReloadGun()
+{
+    const int AmountToReload = FMath::Min(CarriedAmmoAmount, WeaponInUse->GetMagazineCapacity() - WeaponInUse->GetAmmoLeft());
+    WeaponInUse->Reload(AmountToReload);
+    CarriedAmmoAmount -= AmountToReload;
 }
 
 FVector AShooterCharacter::GetPatrolEndLocation() const
